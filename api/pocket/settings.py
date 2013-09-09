@@ -1,0 +1,2 @@
+CONSUMER_KEY = "18244-918d1d79777f78c5a8b5638d"
+TOKEN_REDIRECT_URI = "http://localhost:8000/pocket/token"
