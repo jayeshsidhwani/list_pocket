@@ -116,6 +116,7 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'twython_django_oauth',
     'list_pocket',
     'api.twitter',
     'api.pocket',
