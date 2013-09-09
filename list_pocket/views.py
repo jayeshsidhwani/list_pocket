@@ -1,8 +1,13 @@
 # Create your views here.
 from django.http import HttpResponse, HttpResponseRedirect
+from django.shortcuts import render_to_response
 from api.twitter import api as twitter
 from api.twitter import settings
 from twython import Twython
+from models import Users
+
+def home(request):
+    return render_to_response('home/index.html')
 
 def list_status(request):
     data = twitter.Api().get_list_status('76664096')
@@ -30,21 +35,15 @@ def twitter_callback(request):
 
     oauth_verifier = request.GET['oauth_verifier']
     authorized_tokens = twitter.get_authorized_tokens(oauth_verifier)
-    return HttpResponse(authorized_tokens, mimetype="application/json")
 
+    user_data = { 'twitter_id': authorized_tokens['user_id'],
+                  'twitter_handle': authorized_tokens['screen_name'],
+                  'twitter_token': authorized_tokens['oauth_token'] }
 
-    # try:
-    #     profile = TwitterProfile.objects.get(screen_name = authorized_tokens['screen_name'])
-    #     user = User.objects.get(pk=profile.user_id)
-    #     user.backend = 'django.contrib.auth.backends.ModelBackend'
-    #
-    #     if user.is_active:
-    #         auth_login(request, user)
-    #         return HttpResponseRedirect(reverse('app_name:url_name'))
-    #     else:
-    #         return HttpResponseRedirect(reverse('app_name:login'))
-    # except TwitterProfile.DoesNotExist:
-    #     screen_name = authorized_tokens['screen_name']
-    #     oauth_token = authorized_tokens['oauth_token']
-    #     oauth_token_secret = authorized_tokens['oauth_token_secret']
+    Users.objects.get_or_create(**user_data)
+    request.session['user_id'] = authorized_tokens['user_id']
 
+    return HttpResponseRedirect('/dashboard')
+
+def dashboard(request):
+    return HttpResponse(request.session['user_id'])

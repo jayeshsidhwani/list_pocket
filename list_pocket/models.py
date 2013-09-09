@@ -131,6 +131,7 @@ class Users(models.Model):
     id = models.IntegerField(primary_key=True)
     twitter_id = models.IntegerField()
     pocket_token = models.CharField(max_length=200L, blank=True)
+    twitter_token = models.CharField(max_length=200L)
     twitter_handle = models.CharField(max_length=100L, blank=True)
     email = models.CharField(max_length=100L, blank=True)
     class Meta:

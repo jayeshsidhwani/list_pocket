@@ -5,7 +5,8 @@ from django.conf.urls import patterns, include, url
 # admin.autodiscover()
 
 urlpatterns = patterns('',
-    url(r'^$', 'list_pocket.views.list_status', name='list_status'),
+    url(r'^$', 'list_pocket.views.home', name='home'),
     url(r'^twitter/login/$', 'list_pocket.views.twitter_login', name="twitter_login"),
     url(r'^twitter/callback/$', "list_pocket.views.twitter_callback", name="twitter_callback"),
+    url(r'^dashboard', 'list_pocket.views.dashboard', name='dashboard')
 )
